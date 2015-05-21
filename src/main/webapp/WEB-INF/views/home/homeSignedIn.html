@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{view.index.title}">Welcome!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<div class="container" style="padding-top: 20px;">
+    <!-- /* Handle the flash message */-->
+    <th:block th:if="${message != null}">
+        <!-- /* The message code is returned from the @Controller */ -->
+        <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=#{${message.message}(${#authentication.name})})">&nbsp;</div>
+    </th:block>
+    <div class="col-lg-6">
+        <h1>Welcome back, <span th:text="${{name}}"></span>!</h1><br/>
+        <p>We care about your financial well-being! We look forward to receiving your enquiry and will be happy to offer you personal advice to suit your individual needs. Call your customer advisor or arrange an appointment online.</p>
+    </div>
+    <div class="col-lg-5">
+        <h1>Overview of my assets</h1><br/>
+        <div th:each="account : ${accounts}" class="clearfix accounts">
+            <div class="col-lg-1"><div class="accountList"></div></div>
+            <div class="col-lg-7">
+                <div style="text-transform:uppercase;font-size:medium;">
+                    <div th:text="${{account.name}}"></div>
+                </div>
+                <div style="font-style:italic;">
+                    <div th:text="${{account.type.type}}"></div>
+                    <div th:text="${{account.number}}"></div>
+                </div>
+            </div>
+            <div class="col-lg-4" style="text-align:right">
+                <div th:text="${{account.currency}} + '&nbsp;' + ${#numbers.formatDecimal(account.balance, 0, 'DEFAULT', 2, 'DEFAULT')}" style="font-size:medium;"></div>
+                <div style="font-size:small;font-style:italic;"><br/><a href="#" th:href="@{/transaction/}+${{account.id}}">Details</a></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-1"></div>
+</div>
+</body>
+</html>

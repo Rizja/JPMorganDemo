@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Welcome to the Spring MVC Quickstart application! Get started quickly by signing up!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:replace="fragments/header :: header">Header</div>
+<div class="container">
+    <div class="text-center">
+        <img src="../../../resources/images/news.png" />
+        <div style="position:absolute;top:520px;text-align:left;padding-left:10px;">
+            <strong>CLIENT LOGIN</strong><br/>
+            <a href="/signin" th:href="@{/signin}">Private Banking account access</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
