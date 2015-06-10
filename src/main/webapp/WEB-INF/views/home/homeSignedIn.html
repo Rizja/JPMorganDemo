@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="col-lg-4" style="text-align:right">
-                <div th:text="${{account.currency}} + '&nbsp;' + ${#numbers.formatDecimal(account.balance, 0, 'DEFAULT', 2, 'DEFAULT')}" style="font-size:medium;"></div>
+                <div th:text="${{account.currency}} + '&nbsp;' + ${#numbers.formatDecimal((account.balance/1000), 0, 'DEFAULT', 2, 'DEFAULT')}" style="font-size:medium;"></div>
                 <div style="font-size:small;font-style:italic;"><br/><a href="#" th:href="@{/transaction/}+${{account.id}}">Details</a></div>
             </div>
         </div>

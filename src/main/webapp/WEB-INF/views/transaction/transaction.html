@@ -36,7 +36,7 @@
                     <td th:text="${#dates.format(trans.date, 'hh:mm')}"></td>
                     <td th:text="${{trans.sourceAccount==account.number}}?'this account':${{trans.sourceAccount}}" th:style="${{trans.sourceAccount==account.number}}?'font-style:italic;color:gainsboro;':''"></td>
                     <td th:text="${{trans.destAccount==account.number}}?'this account':${{trans.destAccount}}" th:style="${{trans.destAccount==account.number}}?'font-style:italic;color:gainsboro;':''"></td>
-                    <td align="right" th:text="${{trans.currency}}+' '+${#numbers.formatDecimal(trans.amount, 0, 'DEFAULT', 2, 'DEFAULT')}"></td>
+                    <td align="right" th:text="${{trans.currency}}+' '+${#numbers.formatDecimal((trans.amount/1000), 0, 'DEFAULT', 2, 'DEFAULT')}"></td>
                     <td th:text="${{trans.message}}"></td>
                 </tr>
                 </tbody>

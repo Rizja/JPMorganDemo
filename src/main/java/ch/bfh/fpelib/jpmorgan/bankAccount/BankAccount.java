@@ -1,10 +1,9 @@
 package ch.bfh.fpelib.jpmorgan.bankAccount;
 
-import ch.bfh.fpelib.jpmorgan.bankAccount.BankAccount;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 
 @SuppressWarnings("serial")
 @Entity
@@ -15,10 +14,10 @@ public class BankAccount implements java.io.Serializable {
     public static final String FIND_BY_ID = "BankAccount.findById";
 
     public enum AccountType {
-        SAVINGS_ACCOUNT("Savings Account"),
-        TRANSACTION_ACCOUNT("Transaction Account"),
-        TIME_DEPOSIT("Time Deposit"),
-        CALL_DEPOSIT("Call Deposit");
+        SAVINGS("Savings Account"),
+        TRANSACTION("Transaction Account"),
+        TIME("Time Deposit"),
+        CALL("Call Deposit");
         private String type;
         private AccountType(String type) {
             this.type = type;
@@ -28,24 +27,33 @@ public class BankAccount implements java.io.Serializable {
         }
     }
 
-	@Id
-	@GeneratedValue
-	private Long id;
+@Id
+@GeneratedValue
+private Long id;
 
-    private String name;
+// encrypted = true, because always decrypted as soon as in application
+// only false when unencrypted in database before read/written first time
+private boolean encrypted = true;
 
-    @Enumerated
-    private AccountType type;
+@Type(type="ch.bfh.fpelib.jpmorgan.encUserTypes.BankAccountName")
+private String name;
 
-    private String number;
+@Enumerated(value=EnumType.STRING)
+@Type(type="ch.bfh.fpelib.jpmorgan.encUserTypes.BankAccountType")
+private AccountType type;
 
-    private String currency;
+@Type(type="ch.bfh.fpelib.jpmorgan.encUserTypes.IBAN")
+private String number;
 
-    private BigDecimal balance;
+@Type(type="ch.bfh.fpelib.jpmorgan.encUserTypes.Currency")
+private String currency;
+
+@Type(type="ch.bfh.fpelib.jpmorgan.encUserTypes.Amount")
+private BigInteger balance;
 
     protected BankAccount() {}
 
-	public BankAccount(String name, AccountType type, String number, String currency, BigDecimal balance) {
+	public BankAccount(String name, AccountType type, String number, String currency, BigInteger balance) {
 		this.name = name;
         this.type = type;
         this.number = number;
@@ -89,11 +97,11 @@ public class BankAccount implements java.io.Serializable {
         this.currency = currency;
     }
 
-    public BigDecimal getBalance() {
+    public BigInteger getBalance() {
         return balance;
     }
 
-    public void setBalance(BigDecimal balance) {
+    public void setBalance(BigInteger balance) {
         this.balance = balance;
     }
 

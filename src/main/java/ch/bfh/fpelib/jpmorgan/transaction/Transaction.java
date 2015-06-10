@@ -1,7 +1,9 @@
 package ch.bfh.fpelib.jpmorgan.transaction;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 
 @SuppressWarnings("serial")
@@ -22,21 +24,31 @@ public class Transaction implements java.io.Serializable {
 	@GeneratedValue
 	private Long id;
 
+    // encrypted = true, because always decrypted as soon as in application
+    // only false when unencrypted in database before read/written first time
+    private boolean encrypted = true;
+
+    @Type(type="ch.bfh.fpelib.jpmorgan.encUserTypes.IBAN")
     private String sourceAccount;
 
+    @Type(type="ch.bfh.fpelib.jpmorgan.encUserTypes.IBAN")
 	private String destAccount;
 
-    private BigDecimal amount;
+    @Type(type="ch.bfh.fpelib.jpmorgan.encUserTypes.Amount")
+    private BigInteger amount;
 
+    @Type(type="ch.bfh.fpelib.jpmorgan.encUserTypes.Currency")
     private String currency;
 
+    @Type(type="ch.bfh.fpelib.jpmorgan.encUserTypes.Date")
 	private Timestamp date;
 
+    @Type(type="ch.bfh.fpelib.jpmorgan.encUserTypes.TransactionMessage")
     private String message;
 
     protected Transaction() {}
 
-	public Transaction(String sourceAccount, String destAccount, BigDecimal amount, String currency, Timestamp date, String message) {
+	public Transaction(String sourceAccount, String destAccount, BigInteger amount, String currency, Timestamp date, String message) {
 		this.sourceAccount = sourceAccount;
 		this.destAccount = destAccount;
 		this.amount = amount;
@@ -65,11 +77,11 @@ public class Transaction implements java.io.Serializable {
         this.destAccount = destAccount;
     }
 
-    public BigDecimal getAmount() {
+    public BigInteger getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(BigInteger amount) {
         this.amount = amount;
     }
 
